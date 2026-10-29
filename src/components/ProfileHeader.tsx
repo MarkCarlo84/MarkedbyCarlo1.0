@@ -6,7 +6,7 @@ interface ProfileHeaderProps {
   config: BusinessCardConfig
   /** Permanent profile portrait */
   avatarSrc?: string
-  projectCount?: number
+  projectCount?: number | string
 }
 
 /** "Bachelor of Science in Information Technology" -> "BSIT" */
@@ -38,9 +38,18 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   // Quick-facts strip
   const degree = degreeAcronym(config.profileInfo?.degree)
   const city = config.businessAddress?.split(',')[0]?.trim()
+  const displayProjectCount =
+    config.projectsCount != null
+      ? String(config.projectsCount)
+      : typeof projectCount === 'number' && projectCount > 0
+        ? String(projectCount).padStart(2, '0')
+        : projectCount
+          ? String(projectCount)
+          : null
+
   const facts = [
     degree && { label: 'Degree', value: degree },
-    projectCount > 0 && { label: 'Projects', value: String(projectCount).padStart(2, '0') },
+    displayProjectCount && { label: 'Projects', value: displayProjectCount },
     city && { label: 'Based in', value: city },
   ].filter(Boolean) as { label: string; value: string }[]
 

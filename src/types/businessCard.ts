@@ -76,6 +76,9 @@ export interface BusinessCardConfig {
   /** Dedicated IT Graduate Profile & Competency Information */
   profileInfo?: GraduateProfileInfo
 
+  /** Total project count display (e.g. "20+") */
+  projectsCount?: string | number
+
   /** Dedicated IT & software projects showcased in the interactive carousel */
   projects?: ProjectItem[]
 

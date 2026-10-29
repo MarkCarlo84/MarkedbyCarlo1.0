@@ -33,7 +33,8 @@ export const BusinessCard: React.FC<BusinessCardProps> = ({
     cardRef.current.style.setProperty('--my', `${e.clientY - rect.top}px`)
   }, [])
 
-  const projectCount = config.projects?.length ?? 0
+  const carouselItemCount = config.projects?.length ?? 0
+  const projectCount = config.projectsCount ?? carouselItemCount
   let sectionIndex = 0
   const nextIndex = () => String(++sectionIndex).padStart(2, '0')
 
@@ -90,7 +91,7 @@ export const BusinessCard: React.FC<BusinessCardProps> = ({
         )}
 
         {/* Dedicated Projects Showcase Carousel */}
-        {projectCount > 0 && (
+        {carouselItemCount > 0 && (
           <Reveal>
             <ProjectsCarousel projects={config.projects} index={nextIndex()} />
           </Reveal>

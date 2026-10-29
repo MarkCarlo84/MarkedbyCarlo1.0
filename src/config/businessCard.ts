@@ -16,7 +16,7 @@ export const businessCardConfig: BusinessCardConfig = {
   professionalTitle: 'BSIT Graduate & Software Developer',
   businessName: 'MarkedbyCarlo',
   shortDescription:
-    'Information Technology graduate specializing in modern full-stack web applications, cloud architectures, and responsive software solutions.',
+    'Information Technology graduate specializing in modern full-stack web applications, and responsive software solutions.',
   availability: 'Open to opportunities',
 
   // Profile Picture & Signature Calligraphy Logo
@@ -29,25 +29,27 @@ export const businessCardConfig: BusinessCardConfig = {
   emailAddress: 'garciamarkcarlo84@gmail.com',
   businessAddress: 'Laguna, Philippines',
 
-  // C. Social & Developer Links (Facebook, Instagram, GitHub)
+  // C. Social & Developer Links (Facebook, Instagram)
   facebookUrl: 'https://www.facebook.com/MrkCrl0926',
   instagramUrl: 'https://www.instagram.com/kramcrl/',
-  githubUrl: 'https://github.com/MarkCarlo84',
 
   // Website / Portfolio
   websiteUrl: 'https://github.com/MarkCarlo84',
 
+  // Project count badge
+  projectsCount: '20+',
+
   // D. IT Graduate Profile & Technical Competencies
   profileInfo: {
     degree: 'Bachelor of Science in Information Technology',
-    specialization: 'Software Engineering & Web Systems',
+    specialization: 'Software Developer & Web Developer',
     highlights: [
       'Full-Stack Web & Mobile Development',
-      'Database Architecture & Cloud Systems',
+      'Database Architecture',
       'UI/UX Engineering & Modern Frameworks',
       'System Analysis & Agile Workflows',
     ],
-    bio: 'Equipped with a solid foundation in software engineering, database administration, and modern web architectures. Dedicated to crafting scalable, high-performance digital solutions with meticulous attention to detail and user experience.',
+    bio: 'Equipped with a solid foundation in software development, database administration, and modern web architectures. Dedicated to crafting scalable, high-performance digital solutions with meticulous attention to detail and user experience.',
   },
 
   // E. Dedicated Projects Carousel Showcase
