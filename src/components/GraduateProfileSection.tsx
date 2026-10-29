@@ -1,27 +1,16 @@
 import React from 'react'
 import type { BusinessCardConfig } from '../types/businessCard'
-import { GraduationCap, Check } from 'lucide-react'
+import { GraduationCap } from 'lucide-react'
 import { SectionHeader } from './SectionHeader'
 
 interface GraduateProfileSectionProps {
   config: BusinessCardConfig
   index: string
-  activePortrait: string
-  onSelectPortrait: (src: string) => void
 }
-
-// Available graduation portraits uploaded by the user
-const portraits = [
-  { id: 'crossed', src: '/images/carlo-profile.jpg', label: 'Classic' },
-  { id: 'chin', src: '/images/carlo-grad-pose.jpg', label: 'Editorial' },
-  { id: 'cap', src: '/images/carlo-grad-cap.jpg', label: 'Cap & Gown' },
-]
 
 export const GraduateProfileSection: React.FC<GraduateProfileSectionProps> = ({
   config,
   index,
-  activePortrait,
-  onSelectPortrait,
 }) => {
   const profile = config.profileInfo
   if (!profile) return null
@@ -61,39 +50,6 @@ export const GraduateProfileSection: React.FC<GraduateProfileSectionProps> = ({
             </li>
           ))}
         </ul>
-      </div>
-
-      {/* Graduation Portraits — selecting one updates the header avatar */}
-      <div className="portraits-block">
-        <div className="portraits-head">
-          <span className="micro-label">Graduation Poses</span>
-          <span className="micro-hint">Tap to set as photo</span>
-        </div>
-        <div className="portraits-row" role="radiogroup" aria-label="Choose profile portrait">
-          {portraits.map((p) => {
-            const active = activePortrait === p.src
-            return (
-              <button
-                key={p.id}
-                id={`portrait-${p.id}`}
-                type="button"
-                role="radio"
-                aria-checked={active}
-                className={`portrait-thumb ${active ? 'is-active' : ''}`}
-                onClick={() => onSelectPortrait(p.src)}
-                title={p.label}
-              >
-                <img src={p.src} alt="" className="portrait-thumb-img" loading="lazy" />
-                <span className="portrait-thumb-label">{p.label}</span>
-                {active && (
-                  <span className="portrait-thumb-check" aria-hidden="true">
-                    <Check size={11} strokeWidth={3} />
-                  </span>
-                )}
-              </button>
-            )
-          })}
-        </div>
       </div>
     </section>
   )

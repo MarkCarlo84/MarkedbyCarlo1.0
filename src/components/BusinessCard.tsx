@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useRef } from 'react'
 import type { BusinessCardConfig } from '../types/businessCard'
 import { ProfileHeader } from './ProfileHeader'
 import { CardActions } from './CardActions'
@@ -24,11 +24,6 @@ export const BusinessCard: React.FC<BusinessCardProps> = ({
   onToast,
 }) => {
   const cardRef = useRef<HTMLElement>(null)
-
-  // Shared portrait selection: the Graduation Poses picker drives the header avatar
-  const [activePortrait, setActivePortrait] = useState<string>(
-    config.profileImage || '/images/carlo-profile.jpg'
-  )
 
   // Cursor-following light sheen (pointer devices only; no re-renders)
   const handlePointerMove = useCallback((e: React.PointerEvent<HTMLElement>) => {
@@ -73,7 +68,7 @@ export const BusinessCard: React.FC<BusinessCardProps> = ({
       {/* Full-Bleed Profile Header (Banner & Avatar) */}
       <ProfileHeader
         config={config}
-        avatarSrc={activePortrait}
+        avatarSrc={config.profileImage || '/images/carlo-profile.jpg'}
         projectCount={projectCount}
       />
 
@@ -90,8 +85,6 @@ export const BusinessCard: React.FC<BusinessCardProps> = ({
             <GraduateProfileSection
               config={config}
               index={nextIndex()}
-              activePortrait={activePortrait}
-              onSelectPortrait={setActivePortrait}
             />
           </Reveal>
         )}

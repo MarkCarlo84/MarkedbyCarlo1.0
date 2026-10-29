@@ -10,7 +10,7 @@ When someone taps an NFC business card with their smartphone, this website opens
 
 - **🎴 Digital Card Aesthetic**: Designed to feel like an ultra-luxe physical card translated into a digital experience — clean typography, subtle borders, delicate shadows, and high contrast.
 - **🎨 Enhanced Header Banner & Signature Calligraphy Logo**: Full-bleed luxury top banner featuring the signature **MarkedbyCarlo** calligraphy logo with seamless theme-adaptive blending (luminous platinum foil in dark mode, jet black ink in light mode) and an overlapping circular graduate portrait frame with a verified BSIT graduate ribbon.
-- **🎓 Dedicated Graduate Profile Section**: Highlights degree (*Bachelor of Science in Information Technology*), core technical competencies (Full-Stack, Cloud & Databases, UI/UX, System Analysis), professional bio, and an interactive graduation pose selector.
+- **🎓 Dedicated Graduate Profile Section**: Highlights degree (*Bachelor of Science in Information Technology*), core technical competencies (Full-Stack, Cloud & Databases, UI/UX, System Analysis), and professional bio.
 - **🚀 IT Graduate Project Carousel**: An interactive touch/swipe-enabled carousel showcasing featured software projects, tech stack badges, high-res UI previews, and live repository links with smooth auto-advancing animation and manual chevron/dot controls.
 - **💬 Social & Developer Profiles**: Quick-access buttons for **GitHub**, **Instagram**, and **Facebook** with official vector icons and secure external link attributes.
 - **⚡ 100% Static & Lightweight**: No backend, database, CMS, or authentication required. Sub-second initial load on 4G/5G mobile networks.

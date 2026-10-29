@@ -40,11 +40,8 @@ function App() {
       metaThemeColor.setAttribute('content', theme === 'dark' ? '#050505' : '#ededeb')
     }
 
-    // Dynamic Title
-    const titleParts = [config.fullName]
-    if (config.professionalTitle) titleParts.push(config.professionalTitle)
-    if (config.businessName) titleParts.push(config.businessName)
-    document.title = `${titleParts.join(' — ')} | Digital Business Card`
+    // Document Title
+    document.title = config.businessName || config.fullName || 'MarkedbyCarlo'
   }, [theme, config])
 
   const toggleTheme = () => {

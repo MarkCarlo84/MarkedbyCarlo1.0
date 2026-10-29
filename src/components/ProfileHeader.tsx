@@ -4,7 +4,7 @@ import { BadgeCheck } from 'lucide-react'
 
 interface ProfileHeaderProps {
   config: BusinessCardConfig
-  /** Currently selected portrait (driven by the Graduation Poses picker) */
+  /** Permanent profile portrait */
   avatarSrc?: string
   projectCount?: number
 }
