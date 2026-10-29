@@ -389,6 +389,7 @@ img {
     radial-gradient(110% 85% at 50% 25%, #242428 0%, #111114 45%, #050506 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 -35px 45px -15px rgba(0, 0, 0, 0.95);
+  transition: background var(--duration-normal) ease, border-color var(--duration-normal) ease, box-shadow var(--duration-normal) ease;
 }
 
 .banner-noise {
@@ -656,6 +657,124 @@ img {
   background: linear-gradient(to top, rgba(11, 11, 12, 0.95) 0%, rgba(11, 11, 12, 0.35) 50%, transparent 100%);
   pointer-events: none;
   z-index: 1;
+  transition: background var(--duration-normal) ease;
+}
+
+/* Logo variant switching between dark and light themes */
+.banner-brand-logo--light {
+  display: none !important;
+}
+
+.banner-brand-logo--dark {
+  display: block;
+}
+
+[data-theme='light'] .banner-brand-logo--dark {
+  display: none !important;
+}
+
+[data-theme='light'] .banner-brand-logo--light {
+  display: block !important;
+}
+
+/* ==========================================================================
+   HEADER BANNER — LIGHT THEME ADAPTATION
+   ========================================================================== */
+
+[data-theme='light'] .header-banner {
+  background: radial-gradient(110% 85% at 50% 25%, #ffffff 0%, #f4f4f0 45%, #e5e5df 100%);
+  border-bottom: 1px solid var(--line);
+  box-shadow: inset 0 -35px 45px -15px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='light'] .banner-noise {
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+}
+
+[data-theme='light'] .banner-spotlight {
+  background: radial-gradient(55% 75% at 50% 45%, rgba(255, 255, 255, 0.8) 0%, transparent 72%);
+}
+
+[data-theme='light'] .banner-lines {
+  background-image: repeating-linear-gradient(
+    115deg,
+    rgba(0, 0, 0, 0.025) 0px,
+    rgba(0, 0, 0, 0.025) 1px,
+    transparent 1px,
+    transparent 7px
+  );
+  mask-image: linear-gradient(180deg, #000 0%, transparent 95%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 95%);
+}
+
+[data-theme='light'] .banner-orbital-rings {
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme='light'] .banner-orbital-rings::before {
+  border-color: rgba(0, 0, 0, 0.045);
+}
+
+[data-theme='light'] .banner-orbital-rings::after {
+  border-color: rgba(0, 0, 0, 0.035);
+}
+
+[data-theme='light'] .banner-corner-tl,
+[data-theme='light'] .banner-corner-bl,
+[data-theme='light'] .banner-corner-br {
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+[data-theme='light'] .banner-sweep {
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.45) 45%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(255, 255, 255, 0.45) 55%,
+    transparent 100%
+  );
+}
+
+[data-theme='light'] .banner-meta-tag {
+  color: rgba(0, 0, 0, 0.78);
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme='light'] .banner-nfc-pulse {
+  background: #0a0a0a;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme='light'] .banner-serial-tag {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+[data-theme='light'] .banner-logo-halo {
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.015) 45%, transparent 75%);
+}
+
+[data-theme='light'] .banner-brand-logo {
+  filter: drop-shadow(0 2px 14px rgba(0, 0, 0, 0.14));
+}
+
+[data-theme='light'] .banner-brand-logo:hover {
+  filter: drop-shadow(0 6px 22px rgba(0, 0, 0, 0.22));
+}
+
+[data-theme='light'] .banner-signature-sub {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+[data-theme='light'] .banner-bottom-vignette {
+  background: linear-gradient(to top, rgba(251, 251, 250, 0.98) 0%, rgba(251, 251, 250, 0.4) 50%, transparent 100%);
+}
+
+[data-theme='light'] .avatar-frame {
+  box-shadow: 0 14px 32px -8px rgba(0, 0, 0, 0.16);
 }
 
 /* ==========================================================================
@@ -1122,6 +1241,7 @@ img {
   line-height: 1.65;
   color: var(--text-2);
   text-wrap: pretty;
+  text-align: justify;
 }
 
 /* ==========================================================================
@@ -1404,6 +1524,7 @@ img {
   line-height: 1.6;
   color: var(--text-2);
   text-wrap: pretty;
+  text-align: justify;
 }
 
 .project-tags {

@@ -74,10 +74,19 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           <div className="banner-logo-wrapper">
             <div className="banner-logo-halo" aria-hidden="true" />
             <div className="banner-brand-logo-frame">
+              {/* White logo for Dark Mode */}
               <img
                 src="/images/markedbycarlo-logo-white.png"
                 alt={config.businessName || config.fullName}
-                className="banner-brand-logo"
+                className="banner-brand-logo banner-brand-logo--dark"
+                loading="eager"
+                decoding="async"
+              />
+              {/* Black logo for Light Mode */}
+              <img
+                src="/images/markedbycarlo-logo.png"
+                alt={config.businessName || config.fullName}
+                className="banner-brand-logo banner-brand-logo--light"
                 loading="eager"
                 decoding="async"
               />

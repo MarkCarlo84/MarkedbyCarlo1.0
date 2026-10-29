@@ -119,7 +119,7 @@ export const ProjectsCarousel: React.FC<ProjectsCarouselProps> = ({ projects, in
         <article className="project-card" key={activeProject.id}>
           {/* Project Preview Image */}
           {activeProject.image && (
-            <div className="project-media">
+            <div className={`project-media ${activeProject.id === 'nfc-business-card' ? 'project-media--no-scrim' : ''}`}>
               <img
                 src={activeProject.image}
                 alt={activeProject.title}
@@ -127,7 +127,9 @@ export const ProjectsCarousel: React.FC<ProjectsCarouselProps> = ({ projects, in
                 loading="lazy"
                 decoding="async"
               />
-              <div className="project-media-scrim" aria-hidden="true" />
+              {activeProject.id !== 'nfc-business-card' && (
+                <div className="project-media-scrim" aria-hidden="true" />
+              )}
               <span className="project-category">{activeProject.category}</span>
 
               {/* Prev / Next controls float on the image */}
