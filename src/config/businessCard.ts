@@ -17,6 +17,7 @@ export const businessCardConfig: BusinessCardConfig = {
   businessName: 'MarkedbyCarlo',
   shortDescription:
     'Information Technology graduate specializing in modern full-stack web applications, cloud architectures, and responsive software solutions.',
+  availability: 'Open to opportunities',
 
   // Profile Picture & Signature Calligraphy Logo
   profileImage: '/images/carlo-profile.jpg',

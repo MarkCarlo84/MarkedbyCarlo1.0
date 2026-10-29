@@ -1,87 +1,98 @@
-import React, { useState } from 'react'
+import React from 'react'
 import type { BusinessCardConfig } from '../types/businessCard'
-import { GraduationCap, Code, CheckCircle, Sparkles, User } from 'lucide-react'
+import { GraduationCap, Check } from 'lucide-react'
+import { SectionHeader } from './SectionHeader'
 
 interface GraduateProfileSectionProps {
   config: BusinessCardConfig
+  index: string
+  activePortrait: string
+  onSelectPortrait: (src: string) => void
 }
 
-export const GraduateProfileSection: React.FC<GraduateProfileSectionProps> = ({ config }) => {
+// Available graduation portraits uploaded by the user
+const portraits = [
+  { id: 'crossed', src: '/images/carlo-profile.jpg', label: 'Classic' },
+  { id: 'chin', src: '/images/carlo-grad-pose.jpg', label: 'Editorial' },
+  { id: 'cap', src: '/images/carlo-grad-cap.jpg', label: 'Cap & Gown' },
+]
+
+export const GraduateProfileSection: React.FC<GraduateProfileSectionProps> = ({
+  config,
+  index,
+  activePortrait,
+  onSelectPortrait,
+}) => {
   const profile = config.profileInfo
-  const [selectedPhoto, setSelectedPhoto] = useState<string>(config.profileImage || '/images/carlo-profile.jpg')
-
-  // Available graduation portraits uploaded by the user
-  const portraits = [
-    { id: 'crossed', src: '/images/carlo-profile.jpg', label: 'Classic' },
-    { id: 'chin', src: '/images/carlo-grad-pose.jpg', label: 'Editorial' },
-    { id: 'cap', src: '/images/carlo-grad-cap.jpg', label: 'Cap & Gown' },
-  ]
-
   if (!profile) return null
 
   return (
-    <section className="profile-details-section" aria-label="IT Graduate Profile">
-      {/* Section Header */}
-      <div className="section-header-compact">
-        <div className="section-header-title">
-          <GraduationCap size={16} className="section-header-icon" aria-hidden="true" />
-          <h2 className="section-heading">Graduate Profile</h2>
+    <section className="panel profile-panel" aria-labelledby="profile-heading">
+      <SectionHeader
+        index={index}
+        title="Graduate"
+        accent="Profile"
+        id="profile-heading"
+        meta={<span className="meta-chip meta-chip-solid">BSIT</span>}
+      />
+
+      {/* Academic Degree */}
+      <div className="degree-row">
+        <div className="degree-icon-box" aria-hidden="true">
+          <GraduationCap size={20} strokeWidth={1.8} />
         </div>
-        <span className="degree-badge">BSIT</span>
+        <div className="degree-text">
+          <h3 className="degree-name">{profile.degree}</h3>
+          <p className="degree-specialization">{profile.specialization}</p>
+        </div>
       </div>
 
-      <div className="profile-card-inner">
-        {/* Academic Degree Info */}
-        <div className="degree-summary-box">
-          <div className="degree-icon-box">
-            <Sparkles size={18} strokeWidth={2} />
-          </div>
-          <div className="degree-text-content">
-            <h3 className="degree-name">{profile.degree}</h3>
-            <p className="specialization-text">{profile.specialization}</p>
-          </div>
+      {/* Professional Bio */}
+      <p className="panel-body-text">{profile.bio}</p>
+
+      {/* Core Competencies */}
+      <div className="competencies-block">
+        <span className="micro-label">Core Competencies</span>
+        <ul className="competencies-grid">
+          {profile.highlights.map((item, i) => (
+            <li key={item} className="competency-tile">
+              <span className="competency-num">{String(i + 1).padStart(2, '0')}</span>
+              <span className="competency-text">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Graduation Portraits — selecting one updates the header avatar */}
+      <div className="portraits-block">
+        <div className="portraits-head">
+          <span className="micro-label">Graduation Poses</span>
+          <span className="micro-hint">Tap to set as photo</span>
         </div>
-
-        {/* Professional Bio */}
-        <p className="profile-bio-text">{profile.bio}</p>
-
-        {/* Technical Competencies Grid */}
-        <div className="competencies-block">
-          <h4 className="competencies-title">
-            <Code size={14} aria-hidden="true" />
-            Core Competencies
-          </h4>
-          <div className="competencies-list">
-            {profile.highlights.map((item, index) => (
-              <div key={index} className="competency-item">
-                <CheckCircle size={13} className="check-icon" aria-hidden="true" />
-                <span>{item}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Interactive Graduation Portraits Switcher */}
-        <div className="portraits-selector-box">
-          <div className="portraits-selector-header">
-            <User size={13} aria-hidden="true" />
-            <span>Graduation Poses</span>
-          </div>
-          <div className="portraits-thumbnails-row">
-            {portraits.map((p) => (
+        <div className="portraits-row" role="radiogroup" aria-label="Choose profile portrait">
+          {portraits.map((p) => {
+            const active = activePortrait === p.src
+            return (
               <button
                 key={p.id}
+                id={`portrait-${p.id}`}
                 type="button"
-                className={`portrait-thumb-btn ${selectedPhoto === p.src ? 'thumb-active' : ''}`}
-                onClick={() => setSelectedPhoto(p.src)}
-                aria-label={`View ${p.label} pose`}
+                role="radio"
+                aria-checked={active}
+                className={`portrait-thumb ${active ? 'is-active' : ''}`}
+                onClick={() => onSelectPortrait(p.src)}
                 title={p.label}
               >
-                <img src={p.src} alt={p.label} className="portrait-thumb-img" />
-                <span className="thumb-label">{p.label}</span>
+                <img src={p.src} alt="" className="portrait-thumb-img" loading="lazy" />
+                <span className="portrait-thumb-label">{p.label}</span>
+                {active && (
+                  <span className="portrait-thumb-check" aria-hidden="true">
+                    <Check size={11} strokeWidth={3} />
+                  </span>
+                )}
               </button>
-            ))}
-          </div>
+            )
+          })}
         </div>
       </div>
     </section>

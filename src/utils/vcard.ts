@@ -31,13 +31,19 @@ function parseName(fullName: string): { firstName: string; lastName: string } {
  * Omits any missing or empty fields
  */
 export function generateVCardString(config: BusinessCardConfig): string {
-  const { firstName, lastName } = parseName(config.fullName)
+  // Prefer the real name for the address book entry; keep the brand as a nickname
+  const contactName = config.displayName?.trim() || config.fullName
+  const { firstName, lastName } = parseName(contactName)
   const lines: string[] = [
     'BEGIN:VCARD',
     'VERSION:3.0',
     `N:${escapeVCardValue(lastName)};${escapeVCardValue(firstName)};;;`,
-    `FN:${escapeVCardValue(config.fullName)}`,
+    `FN:${escapeVCardValue(contactName)}`,
   ]
+
+  if (contactName !== config.fullName && config.fullName?.trim()) {
+    lines.push(`NICKNAME:${escapeVCardValue(config.fullName)}`)
+  }
 
   if (config.businessName?.trim()) {
     lines.push(`ORG:${escapeVCardValue(config.businessName)}`)
@@ -84,7 +90,7 @@ export function downloadVCard(config: BusinessCardConfig): void {
   const blob = new Blob([vCardContent], { type: 'text/vcard;charset=utf-8' })
   const url = URL.createObjectURL(blob)
 
-  const sanitizedName = config.fullName
+  const sanitizedName = (config.displayName?.trim() || config.fullName)
     .trim()
     .replace(/[^a-zA-Z0-9\s_-]/g, '')
     .replace(/\s+/g, '_')

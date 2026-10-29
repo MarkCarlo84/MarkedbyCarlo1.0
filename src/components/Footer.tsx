@@ -11,10 +11,14 @@ export const Footer: React.FC<FooterProps> = ({ config }) => {
 
   return (
     <footer className="card-footer">
-      <div className="nfc-indicator" aria-hidden="true">
-        <span className="nfc-pulse-dot" />
-        <span className="nfc-label">NFC Digital Card</span>
+      <div className="footer-divider" aria-hidden="true">
+        <span className="nfc-beacon">
+          <span className="nfc-beacon-ring" />
+          <span className="nfc-beacon-ring nfc-beacon-ring-delay" />
+          <span className="nfc-beacon-core" />
+        </span>
       </div>
+
       <p className="copyright-text">
         &copy; {year} {entityName}. All rights reserved.
       </p>

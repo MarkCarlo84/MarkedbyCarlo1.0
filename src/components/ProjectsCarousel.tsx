@@ -1,12 +1,17 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { ChevronLeft, ChevronRight, ExternalLink, Code2, Layers } from 'lucide-react'
+import React, { useState, useRef, useCallback } from 'react'
+import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react'
 import type { ProjectItem } from '../types/businessCard'
+import { SectionHeader } from './SectionHeader'
 
 interface ProjectsCarouselProps {
   projects?: ProjectItem[]
+  index: string
 }
 
-export const ProjectsCarousel: React.FC<ProjectsCarouselProps> = ({ projects }) => {
+/** Autoplay duration per slide (ms) — kept in sync with the CSS progress fill */
+const SLIDE_DURATION = 5000
+
+export const ProjectsCarousel: React.FC<ProjectsCarouselProps> = ({ projects, index }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
   const touchStartX = useRef<number | null>(null)
@@ -25,17 +30,6 @@ export const ProjectsCarousel: React.FC<ProjectsCarouselProps> = ({ projects }) 
     setCurrentIndex((prev) => (prev - 1 + total) % total)
   }, [total])
 
-  // Automatic gentle carousel advance every 4.5s unless hovered or interacted with
-  useEffect(() => {
-    if (total <= 1 || isPaused) return
-
-    const interval = setInterval(() => {
-      handleNext()
-    }, 4500)
-
-    return () => clearInterval(interval)
-  }, [total, isPaused, handleNext])
-
   // Mobile Touch Swipe Handlers
   const handleTouchStart = (e: React.TouchEvent) => {
     setIsPaused(true)
@@ -47,21 +41,11 @@ export const ProjectsCarousel: React.FC<ProjectsCarouselProps> = ({ projects }) 
   }
 
   const handleTouchEnd = () => {
-    if (!touchStartX.current || !touchEndX.current) {
-      setIsPaused(false)
-      return
+    if (touchStartX.current !== null && touchEndX.current !== null) {
+      const distance = touchStartX.current - touchEndX.current
+      if (distance > 45) handleNext()
+      else if (distance < -45) handlePrev()
     }
-
-    const distance = touchStartX.current - touchEndX.current
-    const isSwipeLeft = distance > 45
-    const isSwipeRight = distance < -45
-
-    if (isSwipeLeft) {
-      handleNext()
-    } else if (isSwipeRight) {
-      handlePrev()
-    }
-
     touchStartX.current = null
     touchEndX.current = null
     setIsPaused(false)
@@ -70,124 +54,138 @@ export const ProjectsCarousel: React.FC<ProjectsCarouselProps> = ({ projects }) 
   if (total === 0) return null
 
   const activeProject = items[currentIndex]
+  const primaryLink = activeProject.linkUrl || activeProject.githubUrl
 
   return (
     <section
-      className="projects-section"
+      className="panel projects-panel"
       aria-roledescription="carousel"
-      aria-label="IT Projects Showcase"
+      aria-labelledby="projects-heading"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
+      onFocus={() => setIsPaused(true)}
+      onBlur={() => setIsPaused(false)}
     >
-      {/* Section Header */}
-      <div className="projects-header">
-        <div className="projects-title-box">
-          <Layers size={16} className="projects-header-icon" aria-hidden="true" />
-          <h2 className="projects-title">Featured Projects</h2>
-        </div>
-        <span className="projects-counter" aria-live="polite">
-          {currentIndex + 1} / {total}
-        </span>
-      </div>
+      <SectionHeader
+        index={index}
+        title="Featured"
+        accent="Projects"
+        id="projects-heading"
+        meta={
+          <span className="meta-counter" aria-live="polite">
+            <strong>{String(currentIndex + 1).padStart(2, '0')}</strong>
+            <span className="meta-counter-sep">/</span>
+            {String(total).padStart(2, '0')}
+          </span>
+        }
+      />
 
-      {/* Carousel Track Container */}
-      <div className="carousel-track-wrapper">
-        <div className="carousel-card-container">
-          <article className="project-card" key={activeProject.id}>
-            {/* Project Preview Image */}
-            {activeProject.image && (
-              <div className="project-image-box">
-                <img
-                  src={activeProject.image}
-                  alt={activeProject.title}
-                  className="project-image"
-                  loading="lazy"
-                />
-                <span className="project-category-badge">
-                  {activeProject.category}
-                </span>
-              </div>
-            )}
-
-            {/* Project Content */}
-            <div className="project-content">
-              <div className="project-title-row">
-                <h3 className="project-title">{activeProject.title}</h3>
-                {activeProject.linkUrl && (
-                  <a
-                    href={activeProject.linkUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="project-link-btn"
-                    aria-label={`View ${activeProject.title} project`}
-                    title="View Project"
-                  >
-                    <ExternalLink size={15} strokeWidth={2.2} />
-                  </a>
-                )}
-              </div>
-
-              <p className="project-description">{activeProject.description}</p>
-
-              {/* Technology Stack Tags */}
-              {activeProject.tags && activeProject.tags.length > 0 && (
-                <div className="project-tags-list" aria-label="Technologies Used">
-                  {activeProject.tags.map((tag) => (
-                    <span key={tag} className="project-tag">
-                      <Code2 size={11} className="tag-icon" aria-hidden="true" />
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-          </article>
-        </div>
-
-        {/* Carousel Prev / Next Arrow Controls */}
-        {total > 1 && (
-          <div className="carousel-nav-arrows">
-            <button
-              type="button"
-              className="carousel-arrow carousel-arrow-left"
-              onClick={handlePrev}
-              aria-label="Previous project slide"
-              title="Previous project"
-            >
-              <ChevronLeft size={18} strokeWidth={2.2} />
-            </button>
-            <button
-              type="button"
-              className="carousel-arrow carousel-arrow-right"
-              onClick={handleNext}
-              aria-label="Next project slide"
-              title="Next project"
-            >
-              <ChevronRight size={18} strokeWidth={2.2} />
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Pagination Indicator Dots */}
+      {/* Story-style autoplay progress (each fill completing advances the slide) */}
       {total > 1 && (
-        <div className="carousel-pagination" role="tablist" aria-label="Project Slides">
+        <div
+          className={`story-progress ${isPaused ? 'is-paused' : ''}`}
+          role="tablist"
+          aria-label="Project slides"
+        >
           {items.map((project, idx) => (
             <button
               key={project.id}
               type="button"
               role="tab"
               aria-selected={idx === currentIndex}
-              className={`carousel-dot ${idx === currentIndex ? 'dot-active' : ''}`}
-              onClick={() => setCurrentIndex(idx)}
               aria-label={`Go to slide ${idx + 1}: ${project.title}`}
-            />
+              className={`story-segment ${idx < currentIndex ? 'is-complete' : ''} ${
+                idx === currentIndex ? 'is-active' : ''
+              }`}
+              onClick={() => setCurrentIndex(idx)}
+            >
+              <span
+                key={idx === currentIndex ? `active-${currentIndex}` : `idle-${idx}`}
+                className="story-segment-fill"
+                style={{ animationDuration: `${SLIDE_DURATION}ms` }}
+                onAnimationEnd={idx === currentIndex ? handleNext : undefined}
+              />
+            </button>
           ))}
         </div>
       )}
+
+      <div
+        className="carousel-stage"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <article className="project-card" key={activeProject.id}>
+          {/* Project Preview Image */}
+          {activeProject.image && (
+            <div className="project-media">
+              <img
+                src={activeProject.image}
+                alt={activeProject.title}
+                className="project-image"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="project-media-scrim" aria-hidden="true" />
+              <span className="project-category">{activeProject.category}</span>
+
+              {/* Prev / Next controls float on the image */}
+              {total > 1 && (
+                <div className="carousel-arrows">
+                  <button
+                    type="button"
+                    id="project-prev-btn"
+                    className="carousel-arrow"
+                    onClick={handlePrev}
+                    aria-label="Previous project"
+                  >
+                    <ChevronLeft size={17} strokeWidth={2.2} />
+                  </button>
+                  <button
+                    type="button"
+                    id="project-next-btn"
+                    className="carousel-arrow"
+                    onClick={handleNext}
+                    aria-label="Next project"
+                  >
+                    <ChevronRight size={17} strokeWidth={2.2} />
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Project Content */}
+          <div className="project-content">
+            <h3 className="project-title">{activeProject.title}</h3>
+            <p className="project-description">{activeProject.description}</p>
+
+            {activeProject.tags && activeProject.tags.length > 0 && (
+              <ul className="project-tags" aria-label="Technologies used">
+                {activeProject.tags.map((tag) => (
+                  <li key={tag} className="project-tag">
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {primaryLink && (
+              <a
+                href={primaryLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="project-link"
+                aria-label={`View ${activeProject.title} project`}
+              >
+                <span>View project</span>
+                <ArrowUpRight size={15} strokeWidth={2.2} aria-hidden="true" />
+              </a>
+            )}
+          </div>
+        </article>
+      </div>
     </section>
   )
 }

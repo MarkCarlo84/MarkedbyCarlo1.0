@@ -37,6 +37,9 @@ export interface BusinessCardConfig {
   /** Short professional introduction */
   shortDescription?: string
 
+  /** Optional availability status shown as a pill (e.g. "Open to opportunities") */
+  availability?: string
+
   /** Local asset path or URL for the profile picture */
   profileImage?: string
 

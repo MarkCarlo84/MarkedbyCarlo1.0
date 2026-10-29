@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { businessCardConfig } from './config/businessCard'
 import { BusinessCard } from './components/BusinessCard'
 import { Toast } from './components/Toast'
@@ -16,13 +16,18 @@ function App() {
 
   // Ephemeral toast feedback
   const [toastMessage, setToastMessage] = useState<string | null>(null)
+  const [toastKey, setToastKey] = useState(0)
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const showToast = useCallback((msg: string) => {
+    if (toastTimer.current) clearTimeout(toastTimer.current)
     setToastMessage(msg)
-    const timer = setTimeout(() => {
-      setToastMessage(null)
-    }, 2800)
-    return () => clearTimeout(timer)
+    setToastKey((k) => k + 1)
+    toastTimer.current = setTimeout(() => setToastMessage(null), 2800)
+  }, [])
+
+  useEffect(() => () => {
+    if (toastTimer.current) clearTimeout(toastTimer.current)
   }, [])
 
   // Dynamic document title & theme synchronization
@@ -32,7 +37,7 @@ function App() {
 
     const metaThemeColor = document.querySelector('meta[name="theme-color"]')
     if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', theme === 'dark' ? '#000000' : '#ffffff')
+      metaThemeColor.setAttribute('content', theme === 'dark' ? '#050505' : '#ededeb')
     }
 
     // Dynamic Title
@@ -48,8 +53,12 @@ function App() {
 
   return (
     <div className="page-viewport">
-      {/* Subtle ambient lighting for large screens */}
-      <div className="ambient-background-glow" aria-hidden="true" />
+      {/* Layered monochrome backdrop: spotlight, hairline grid, film grain */}
+      <div className="backdrop" aria-hidden="true">
+        <div className="backdrop-spotlight" />
+        <div className="backdrop-grid" />
+        <div className="backdrop-grain" />
+      </div>
 
       {/* Centered Business Card Container */}
       <main className="business-card-container">
@@ -62,7 +71,7 @@ function App() {
       </main>
 
       {/* Ephemeral Feedback Toast */}
-      <Toast message={toastMessage} />
+      <Toast message={toastMessage} toastKey={toastKey} />
     </div>
   )
 }

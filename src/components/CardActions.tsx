@@ -79,10 +79,12 @@ export const CardActions: React.FC<CardActionsProps> = ({ config, onToast }) => 
       {/* Primary Action: Save Contact */}
       <button
         type="button"
-        className="action-btn action-btn-primary"
+        id="save-contact-btn"
+        className={`action-btn action-btn-primary ${isSaved ? 'is-done' : ''}`}
         onClick={handleSaveContact}
         aria-label="Save contact to phone address book"
       >
+        <span className="action-btn-shine" aria-hidden="true" />
         <span className="action-btn-icon" aria-hidden="true">
           {isSaved ? <Check size={18} strokeWidth={2.5} /> : <UserPlus size={18} strokeWidth={2} />}
         </span>
@@ -94,15 +96,16 @@ export const CardActions: React.FC<CardActionsProps> = ({ config, onToast }) => 
       {/* Secondary Action: Share Digital Card */}
       <button
         type="button"
-        className="action-btn action-btn-secondary"
+        id="share-card-btn"
+        className={`action-btn action-btn-secondary ${isCopied ? 'is-done' : ''}`}
         onClick={handleShare}
         aria-label="Share digital business card"
       >
         <span className="action-btn-icon" aria-hidden="true">
-          {isCopied ? <Check size={18} strokeWidth={2.5} /> : <Share2 size={18} strokeWidth={2} />}
+          {isCopied ? <Check size={18} strokeWidth={2.5} /> : <Share2 size={17} strokeWidth={2} />}
         </span>
         <span className="action-btn-text">
-          {isCopied ? 'Link Copied' : 'Share Card'}
+          {isCopied ? 'Copied' : 'Share'}
         </span>
       </button>
     </div>
