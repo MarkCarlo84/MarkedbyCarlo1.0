@@ -6,10 +6,8 @@ import { Toast } from './components/Toast'
 function App() {
   const config = businessCardConfig
 
-  // Theme Management with localStorage persistence & config fallback
+  // Always start in dark mode by default (unless config explicitly prefers light)
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    const saved = localStorage.getItem('nfc_card_theme')
-    if (saved === 'dark' || saved === 'light') return saved
     if (config.themePreference === 'light') return 'light'
     return 'dark'
   })
